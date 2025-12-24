@@ -1,0 +1,88 @@
+@if (callSessionModel()) {
+<div class="call-center-container">
+  <div class="chat-panel">
+    <div class="chat-header">
+      <h3>Chat</h3>
+    </div>
+
+    <div #chatContainer class="chat-messages">
+      <div *ngFor="let msg of messages()"
+        [ngClass]="getMessageBy(msg) === 'me' ? 'chat-bubble me' : 'chat-bubble other'">
+        {{ (getMessageBy(msg) === 'me' ? "" : msg.senderName +" : ")+ msg.messageText }}
+      </div>
+    </div>
+
+    <div class="chat-input">
+      <input type="text" [(ngModel)]="chatMessage" placeholder="Type message…" (keyup.enter)="submitBtn.click()">
+      <button #submitBtn class="d-flex justify-content-center align-items-center" (click)="sendMessage()">
+        <img src="assets/icons/send.svg" alt="">
+      </button>
+    </div>
+  </div>
+
+  @if(callAcceptedSignal()){ <!-- audio/video/screen receiver -->
+  <div class="call-panel">
+    <div class="call-top-bar">
+      <div class="caller-name">{{ loginUserDetail.userName }}</div>
+      <div class="d-flex align-items-center justify-content-between" style="gap:15px">
+        <div class="call-timer">{{ callTimer }}</div>
+      </div>
+    </div>
+
+    <div class="video-area">
+      <div #videoContainer class="dynamic-video-container flex-wrap"></div>
+    </div>
+
+    <div class="call-controls">
+      <button (click)="toggleMic()" [ngClass]="micEnabled ? 'active' : 'inactive'">
+        <img width="30px" src="assets/icons/microphone.svg" />
+      </button>
+      <button class="end-call" (click)="endCall()" [tooltip]="'End Conversation'">
+        <img width="30px" src="assets/icons/call-end.svg" />
+      </button>
+    </div>
+  </div>
+  }
+  @else { <!-- chat only -->
+
+  <div class="call-panel">
+    <div class="call-top-bar">
+      <div class="caller-name">{{ loginUserDetail.userName }}</div>
+      <div class="d-flex align-items-center justify-content-between" style="gap:15px">
+        <div class="call-timer">{{ callTimer }}</div>
+      </div>
+    </div>
+    @if (callRequestedSignal()) {
+    <div class="d-flex flex-column justify-content-center align-items-center mx-auto h-100 flex-grow-1">
+      <div class="ring-container mb-4">
+        <div class="circle pulse1"></div>
+        <div class="circle pulse2"></div>
+        <div class="phone-icon">
+          <img src="assets/icons/call.svg" alt="calling" class="phone-img" />
+        </div>
+      </div>
+      <h5 class="text-center mb-4 mx-auto text-white">Customer want to connect with <br> audio,video & Screen Share.</h5>
+      <div class="d-flex justify-content-center align-items-center  " style="gap: 25px;">
+        <button class="btn btn-success" (click)="attendCall()">Attend</button>
+        <button class="btn btn-danger" (click)="rejectCall()">Reject</button>
+      </div>
+    </div>
+    } @else {
+    <div class="d-flex justify-content-center align-items-center h-100">
+      <h5 class="text-center mb-3 mx-auto text-white">Customer didn't give permission access screen</h5>
+    </div>
+    }
+    <div class="call-controls">
+      <button class="end-call" (click)="endCall()" [tooltip]="'End Conversation'">
+        <img width="30px" src="assets/icons/call-end.svg" />
+      </button>
+    </div>
+  </div>
+  }
+</div>
+}
+@else {
+<div class="container py-5">
+  <h5>Currently no customer is assigned. We will assigned soon</h5>
+</div>
+}

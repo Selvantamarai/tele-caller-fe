@@ -1,0 +1,27 @@
+<div class="ui-modal-overlay"
+  [style.display]="viewClass == 'show' ? 'block' : 'none'">
+</div>
+
+<div class="modal-right modal-right-View right fade" tabindex="-1" role="dialog"
+  [ngClass]="viewClass" *ngIf="isShow">
+  <div class=" modal-right-dialog align-right" role="document"
+    [style.width]="width ? width+'%' : '50%'">
+    <div class="modal-content modal-right-content">
+      <div class="modal-header modal-right-header header-model-bg"  >
+        <div class="modal-rigth-titlebar">
+          <ng-content select=".app-modal-header"></ng-content>
+        </div>
+        <div class="modal-rigth-controlbar">
+          <i class="modal-rigth-icon dt-icon-close" #closeIcon (click)="hide()">
+          </i>
+        </div>
+      </div>
+      <div class="modal-right-body" [style.maxHeight]="showFooter ? '80vh' : '100vh'" >
+        <ng-content select=".app-modal-body"></ng-content>
+      </div>
+      <div class="modal-right-footer" *ngIf="showFooter">
+        <ng-content select=".app-modal-footer"></ng-content>
+      </div>
+    </div>
+  </div>
+</div>
