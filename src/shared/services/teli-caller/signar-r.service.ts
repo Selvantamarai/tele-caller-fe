@@ -10,9 +10,9 @@ interface HubEventMap {
   CallSession: CallSessionModel;
   Message: ChatMessageModel;
   CallRequested: string;
-  CallRejected:string;
-  CallAccepted:ChimeSessionResponseModel;
-  CallEnded:string;
+  CallRejected: string;
+  CallAccepted: ChimeSessionResponseModel;
+  CallEnded: string;
 }
 
 interface HubMethodMap {
@@ -20,7 +20,8 @@ interface HubMethodMap {
   RejectCall: string;
   AsseptCall: string;
   RequestCall: string;
-  EndCall:string;
+  EndCall: string;
+  ReConnect: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -29,7 +30,7 @@ export class SignalRService {
   public connectionId$: WritableSignal<string> = signal('');
   private eventSignals = new Map<keyof HubEventMap, WritableSignal<any>>();
 
-  constructor(public alertService:AlertService) {
+  constructor(public alertService: AlertService) {
   }
 
   async connectToSignalR(userId: string) {
@@ -37,7 +38,6 @@ export class SignalRService {
       .withUrl(`${environment.API_BASE_URL}/api/v1/CallHub?userId=${userId}`, {
         withCredentials: true
       }).withAutomaticReconnect().build();
-
     try {
       await this.hubConnection.start();
       this.connectionId$.set(this.hubConnection.connectionId as string)
@@ -62,6 +62,6 @@ export class SignalRService {
       return;
     }
     try { await this.hubConnection.invoke(method as string, payload); }
-    catch (err) { this.alertService.warning(err);console.error(`SignalR invoke failed: ${String(method)}`, err); }
+    catch (err) { this.alertService.warning(err); console.error(`SignalR invoke failed: ${String(method)}`, err); }
   }
 }

@@ -90,7 +90,6 @@ export class ChimeMeetingService implements AudioVideoObserver {
     }
   }
 
-
   toggleFullscreen(el: HTMLElement) {
     if (!document.fullscreenElement) {
       el.requestFullscreen?.();

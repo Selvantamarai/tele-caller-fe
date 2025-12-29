@@ -74,9 +74,12 @@ export class CallerPageComponent implements OnInit, OnDestroy {
     }, { allowSignalWrites: true });
 
     effect(() => {
-      this.sessionDetail = this.callSessionModel()?.sessionDetails?.find(o => o.participantId == this.loginUserDetail.userId);
+      const val = this.callSessionModel();
+      if (!val) return;
+      this.sessionDetail = val.sessionDetails?.find(o => o.participantId == this.loginUserDetail.userId);
       if (!this.timerInterval && this.callSessionModel()) this.startCallTimer();
-    });
+      this.messages.set(val.chatMessages)
+    }, { allowSignalWrites: true });
 
     effect(() => {
       this.remoteState.set(this.chime.remoteStreamState());
@@ -85,8 +88,9 @@ export class CallerPageComponent implements OnInit, OnDestroy {
     effect(() => {
       const val = this.callAcceptedSignal();
       if (!val) return;
+      this.callSessionModel.set(val.callSession);
       this.tryStartChime();
-    });
+    }, { allowSignalWrites: true });
 
     effect(() => {
       const val = this.callEndedSignal();
@@ -95,7 +99,9 @@ export class CallerPageComponent implements OnInit, OnDestroy {
     })
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.signalRService.trigger('ReConnect', '')
+  }
 
   ngOnDestroy(): void {
     if (this.timerInterval) clearInterval(this.timerInterval);
@@ -170,6 +176,7 @@ export class CallerPageComponent implements OnInit, OnDestroy {
       this.callTimer = `${this.pad(hrs)}:${this.pad(mins)}:${this.pad(secs)}`;
     }, 1000);
   }
+
   private stopTimer() {
     if (this.timerInterval) clearInterval(this.timerInterval);
     this.timerInterval = null;
