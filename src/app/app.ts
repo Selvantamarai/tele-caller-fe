@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { TeleCallerModule } from './telecaller/telecaller.module';
-import { CallerPageComponent } from "./telecaller/caller-page/caller-page.component";
 import { SignalRService } from '../shared/services/teli-caller/signar-r.service';
 import { GridifyQuery, GridResult } from '../shared/services/core/models';
 import { takeUntil } from 'rxjs';

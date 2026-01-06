@@ -5,12 +5,17 @@ export interface UserDetailModel {
   userId: string;
   userName: string;
   userStatus: UserStatusEnum;
-  userRoleId: string;
+  userType: UserTypeEnum;
 }
 
 export enum UserStatusEnum {
   Available = 1,
-  OnChat = 2,
-  OnCall = 3,
-  LoggedOff = 4
+  OnCall = 2,
+  LoggedOff = 3
+}
+
+export enum UserTypeEnum {
+  Telecaller = 1,
+  Customer = 2,
+  Manager = 3
 }

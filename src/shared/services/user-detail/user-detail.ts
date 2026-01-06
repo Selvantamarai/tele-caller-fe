@@ -17,8 +17,9 @@ export class UserDetailService extends CurdService<
   constructor(
     protected httpClients: HttpClient,
   ) {
-    super(httpClients, 'UserDetail'); //3a90fd66-6654-41d8-9b24-77850a3f5ed4
+    super(httpClients, 'TelecallerUserDetail'); //3a90fd66-6654-41d8-9b24-77850a3f5ed4
   }
+  
   private readonly _loginUserDetail: WritableSignal<UserDetailModel | null> = signal<UserDetailModel | null>(null);
 
   get loginUserDetail(): Signal<UserDetailModel | null> {

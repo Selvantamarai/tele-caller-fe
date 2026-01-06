@@ -30,8 +30,6 @@ export class TelecallerList extends Unsubscriber implements OnDestroy {
     switch (status) {
       case UserStatusEnum.Available:
         return 'Available';
-      case UserStatusEnum.OnChat:
-        return 'On Chat';
       case UserStatusEnum.OnCall:
         return 'On Call';
       case UserStatusEnum.LoggedOff:
@@ -61,7 +59,6 @@ export class TelecallerList extends Unsubscriber implements OnDestroy {
 
 export const UserStatusBgClass: Record<UserStatusEnum, string> = {
   [UserStatusEnum.Available]: 'bg-success',
-  [UserStatusEnum.OnChat]: 'bg-info',
   [UserStatusEnum.OnCall]: 'bg-warning',
   [UserStatusEnum.LoggedOff]: 'bg-secondary'
 };
